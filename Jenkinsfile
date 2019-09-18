@@ -8,7 +8,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("tap_sample")
+                    app = docker.build("demo")
                     
                 }
             }
