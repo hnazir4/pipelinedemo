@@ -2,19 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
+            when {
+                branch 'master'
+            }
             steps {
-                docker.build('demo')
+                script {
+                    app = docker.build("hnazir4/train-schedule")
+                    
+                }
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+        stage('Push Docker Image') {
+            when {
+                branch 'master'
             }
-        }
-        stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                script {
+                    docker.withRegistry("https://922722940372.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws_login") {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
             }
         }
     }
