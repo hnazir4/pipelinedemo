@@ -6,7 +6,7 @@ pipeline {
             
             steps {
                 script {
-                    app = docker.build("demo")
+                    app = docker.build("demo_1")
                     
                 }
             }
@@ -15,8 +15,8 @@ pipeline {
             
             steps {
                 script {
-                    docker.withRegistry("https://922722940372.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws_login") {
-                        app.push("demo")
+                    docker.withRegistry("https://532819289301.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws_login") {
+                        app.push("demo_1")
                         app.push("latest")
                     }
                 }
