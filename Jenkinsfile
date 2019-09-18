@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                docker.build('tap_sample')
+                echo 'Building..'
             }
         }
         stage('Test') {
