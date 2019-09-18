@@ -8,7 +8,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("hnazir4/train-schedule")
+                    app = docker.build("tap_sample")
                     
                 }
             }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://922722940372.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws_login") {
-                        app.push("${env.BUILD_NUMBER}")
+                        app.push("tap_sample")
                         app.push("latest")
                     }
                 }
