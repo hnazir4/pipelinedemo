@@ -1,39 +1,24 @@
 pipeline {
     agent any
-    environment 
-    {
-        VERSION = 'latest'
-        PROJECT = 'tap_sample'
-        IMAGE = 'tap_sample:latest'
-        ECRURL = 'http://999999999999.dkr.ecr.eu-central-1.amazonaws.com'
-        ECRCRED = 'ecr:eu-central-1:tap_ecr'
-    }
+    
     stages {
-        stage('Docker build')
-        {
-            steps
-            {
-                script
-                {
-                    // Build the docker image using a Dockerfile
-                    docker.build("$IMAGE")
-                }
-            }
+        
+        stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("tap_sample")
         }
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+        
+        stage('Push image') {
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. */
+
+        docker.withRegistry("https://922722940372.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-2:aws_login") {
+            app.push("tap_sample")
+            
         }
     }
 }
