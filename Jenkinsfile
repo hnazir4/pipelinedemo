@@ -2,15 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Image') {
+        stage('Build') {
             steps {
-                docker.build('tap_sample')
+                echo 'Building..'
             }
         }
-        stage('Push Image') {
+        stage('Test') {
             steps {
-                docker.withRegistry("https://922722940372.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws_login") 
-                    docker.image('tap_sample').push('latest')
+                echo 'Testing..'
             }
         }
         stage('Deploy') {
